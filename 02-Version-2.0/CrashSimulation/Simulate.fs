@@ -24,10 +24,13 @@ module Simulate =
 
         match message.ToLowerInvariant() with
         | "reboot" ->
-            "{Exception"
-            |> JsonConvert.DeserializeObject<MyType>
+            //"{Exception"
+            //|> JsonConvert.DeserializeObject<MyType>
 
-            |> LogAsObject logInfo
+            //|> LogAsObject logInfo
+
+            failwith "Manual Error"
+
         | _ ->
             "Do Nothing"
             |> logInfo
