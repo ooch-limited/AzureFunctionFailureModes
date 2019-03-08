@@ -1,0 +1,10 @@
+{
+  "applicationInsights": {
+    "sampling": {
+      "isEnabled": false
+    }
+  },
+  "watchDirectories": [
+    "Shared"
+  ]
+}

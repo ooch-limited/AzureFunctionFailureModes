@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "name": "message",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "debug.bus",
+      "subscriptionName": "v1.noCatch",
+      "connection": "debug.bus.sub",
+      "accessRights": "Listen"
+    }
+  ],
+  "disabled": false
+}
