@@ -6,11 +6,12 @@ open Samples.Debug.Common.Operators
 #load "..\Shared\Common\Logging.fsx"
 open Samples.Debug.Common.Logging
 
+open Newtonsoft.Json
+
+type MyType = {name: string}
 
 let Run(message: string, executionContext: ExecutionContext, log: TraceWriter) = 
     let logInfo = log.Info
-    let logError ex = log.Error ("Execution Failed", ex, "message")
-
 
     executionContext 
     |> FunctionGuid logInfo
@@ -18,9 +19,8 @@ let Run(message: string, executionContext: ExecutionContext, log: TraceWriter) =
 
     match message.ToLowerInvariant() with
     | "reboot" ->
-        exn "Exception"
-        |>! logError
-        |> raise 
+        "{Exception" |> Error
+        |> LogAsObject logInfo
     | _ ->
         "Do Nothing"
         |> logInfo

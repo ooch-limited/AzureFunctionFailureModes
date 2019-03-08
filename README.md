@@ -15,5 +15,6 @@ https://github.com/mikhailshilkov/azure-functions-fsharp-examples - Mikhail Shil
 
 ## How To
 
+1. path=%appdata%\npm;%path%
 1. func init -n (create function app without initalising a git repo)
 1. func host start (starts function app to compile the F# function)

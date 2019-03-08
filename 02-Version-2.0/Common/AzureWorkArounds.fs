@@ -1,4 +1,4 @@
-namespace Samples.Debug.Common
+﻿namespace Samples.Debug.v2.Common
 
 
 module AzureWorkArounds =
@@ -9,3 +9,4 @@ module AzureWorkArounds =
         with
         | ex ->
             logError (ex, "Caught by Exception Wrapper")
+
