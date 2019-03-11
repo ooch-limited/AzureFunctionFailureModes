@@ -11,6 +11,25 @@ module Simulate =
 
     type MyType = {name: string}
 
+    [<FunctionName("v2_message_emitter")>]
+    [< NoAutomaticTrigger() >]
+    let v2_message_emitter 
+        ( message : string, 
+          [<ServiceBus ("debug.bus", ServiceBus.EntityType.Topic, Connection = "debug.bus.pub")>]
+          output : byref<string>,
+          executionContext : ExecutionContext, log : ILogger) =
+
+        let logInfo = log.LogInformation
+
+        executionContext 
+        |> FunctionGuid logInfo
+        |> ignore
+
+        message
+        |> logInfo
+
+        output <- message
+
     [<FunctionName("v2_exception_throw_without_catch")>]
     let v2_exception_throw_no_catch 
         ( [<ServiceBusTrigger ("debug.bus", "v2.noCatch", Connection = "debug.bus.sub")>]
