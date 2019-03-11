@@ -10,7 +10,6 @@ https://github.com/mikhailshilkov/azure-functions-fsharp-examples - Mikhail Shil
 1. Show Microsoft staff how to demonstrate Azure Functions V2's erratic performance.
 1. Show differences in performance between V1. and V2.
 
-
 ## How To
 
 1. path=%appdata%\npm;%path%
