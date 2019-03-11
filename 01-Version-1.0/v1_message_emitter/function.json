@@ -1,0 +1,17 @@
+{
+  "bindings": [{
+      "name": "message",
+      "type": "manualTrigger",
+      "direction": "in"
+    },
+    {
+      "name": "output",
+      "type": "serviceBus",
+      "direction": "out",
+      "topicName": "debug.bus",
+      "connection": "debug.bus.pub",
+      "accessRights": "Send"
+    }
+  ],
+  "disabled": false
+}
