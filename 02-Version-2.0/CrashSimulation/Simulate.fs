@@ -16,7 +16,7 @@ module Simulate =
     let v2_message_emitter 
         ( message : string, 
           [<ServiceBus ("debug.bus", ServiceBus.EntityType.Topic, Connection = "debug.bus.pub")>]
-          output : byref<string>,
+          output : ICollector<string>,
           executionContext : ExecutionContext, log : ILogger) =
 
         let logInfo = log.LogInformation
@@ -28,7 +28,7 @@ module Simulate =
         message
         |> logInfo
 
-        output <- message
+        output.Add message
 
     [<FunctionName("v2_exception_throw_without_catch")>]
     let v2_exception_throw_no_catch 
