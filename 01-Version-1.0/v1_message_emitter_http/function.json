@@ -1,0 +1,26 @@
+{
+  "bindings": [{
+      "authLevel": "function",
+      "name": "req",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "name": "res",
+      "type": "http",
+      "direction": "out"
+    },
+    {
+      "type": "serviceBus",
+      "name": "output",
+      "topicName": "debug.bus",
+      "connection": "debug.bus.pub",
+      "accessRights": "Send",
+      "direction": "out"
+    }
+  ],
+  "disabled": false
+}

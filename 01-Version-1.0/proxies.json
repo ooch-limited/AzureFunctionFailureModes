@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json.schemastore.org/proxies",
+  "proxies": {
+    "pr-trigger-v1": {
+      "matchCondition": {
+        "route": "/trigger/v1/%api_v1_host_key%/{message}",
+        "methods": [
+          "GET"
+        ]
+      },
+      "backendUri": "https://%api_v1_base_url%/v1_message_emitter?message={message}&code=%api_v1_host_key%"
+    },
+    "pr-trigger-v2": {
+      "matchCondition": {
+        "route": "/trigger/v2/%api_v1_host_key%/{message}",
+        "methods": [
+          "GET"
+        ]
+      },
+      "backendUri": "https://%api_v2_base_url%/v2_message_emitter?message={message}&code=%api_v2_host_key%"
+    }
+  }
+}
