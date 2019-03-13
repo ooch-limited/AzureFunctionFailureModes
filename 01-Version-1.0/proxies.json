@@ -3,21 +3,21 @@
   "proxies": {
     "pr-trigger-v1": {
       "matchCondition": {
-        "route": "/trigger/v1/%api_v1_host_key%/{message}",
+        "route": "/trigger/v1/{host_key}/{message}",
         "methods": [
           "GET"
         ]
       },
-      "backendUri": "https://%api_v1_base_url%/v1_message_emitter_http?message={message}&code=%api_v1_host_key%"
+      "backendUri": "https://%api_v1_base_url%/v1_message_emitter_http?message={message}&code={host_key}"
     },
     "pr-trigger-v2": {
       "matchCondition": {
-        "route": "/trigger/v2/%api_v1_host_key%/{message}",
+        "route": "/trigger/v2/{host_key}/{message}",
         "methods": [
           "GET"
         ]
       },
-      "backendUri": "https://%api_v2_base_url%/v2_message_emitter_http?message={message}&code=%api_v2_host_key%"
+      "backendUri": "https://%api_v2_base_url%/v2_message_emitter_http?message={message}&code={host_key}"
     }
   }
 }
