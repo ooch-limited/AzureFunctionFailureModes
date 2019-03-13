@@ -4,12 +4,50 @@ namespace Samples.Debug.v2.CrashSimulation
 module Simulate =
     open Microsoft.Azure.WebJobs
     open Microsoft.Extensions.Logging
-    open Samples.Debug.v2.Common
+    open Samples.Debug.v2.Common.Operators
+    open Samples.Debug.v2.Common.Http
     open Samples.Debug.v2.Common.Logging
     open Samples.Debug.v2.Common.AzureWorkArounds
-    open Newtonsoft.Json
+    open System.Net.Http
+
+    open Microsoft.Azure.WebJobs.Extensions.Http
+    open System.Net
+    open System
 
     type MyType = {name: string}
+
+    [<FunctionName("v2_message_emitter_http")>]
+    let v2_message_emitter_http 
+        ( [<HttpTrigger(
+            AuthorizationLevel.Function,
+            "get",
+            Route = "trigger/{message}")>]
+          req : HttpRequestMessage, 
+          message : string,
+          [<ServiceBus ("debug.bus", ServiceBus.EntityType.Topic, Connection = "debug.bus.pub")>]
+          output : ICollector<string>,
+          executionContext : ExecutionContext, log : ILogger) =
+
+        let logInfo = log.LogInformation
+
+        executionContext 
+        |> FunctionGuid logInfo
+        |> ignore
+
+        match message with
+        | message when not (String.IsNullOrEmpty (message)) ->
+            message
+            |> logInfo
+
+            output.Add message
+
+            (HttpStatusCode.OK, message)
+            |> req.CreateResponse 
+        | _ ->
+            "No message"
+            |>! logInfo
+            |>+ HttpStatusCode.BadGateway
+            |> req.CreateResponse 
 
     [<FunctionName("v2_message_emitter")>]
     [< NoAutomaticTrigger() >]

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Common\Http.fs" />
     <Compile Include="Common\Operators.fs" />
     <Compile Include="Common\Logging.fs" />
     <Compile Include="Common\AzureWorkArounds.fs" />
