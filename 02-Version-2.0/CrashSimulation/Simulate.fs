@@ -13,11 +13,12 @@ module Simulate =
     open Microsoft.Azure.WebJobs.Extensions.Http
     open System.Net
     open System
+    open System.Threading.Tasks
 
     type MyType = {name: string}
 
     [<FunctionName("v2_message_emitter_http")>]
-    let v2_message_emitter_http 
+    let v2MessageEmitterHttp 
         ( [<HttpTrigger(
             AuthorizationLevel.Function,
             "get",
@@ -25,7 +26,7 @@ module Simulate =
           req : HttpRequestMessage, 
           message : string,
           [<ServiceBus ("debug.bus", ServiceBus.EntityType.Topic, Connection = "debug.bus.pub")>]
-          output : ICollector<string>,
+          output : IAsyncCollector<string>,
           executionContext : ExecutionContext, log : ILogger) =
 
         let logInfo = log.LogInformation
@@ -39,7 +40,9 @@ module Simulate =
             message
             |> logInfo
 
-            output.Add message
+            output.AddAsync message
+            |> Async.AwaitTask
+            |> Async.Start
 
             (HttpStatusCode.OK, message)
             |> req.CreateResponse 
@@ -49,12 +52,15 @@ module Simulate =
             |>+ HttpStatusCode.BadGateway
             |> req.CreateResponse 
 
+
+
+
     [<FunctionName("v2_message_emitter")>]
     [< NoAutomaticTrigger() >]
-    let v2_message_emitter 
+    let v2MessageEmitter 
         ( message : string, 
           [<ServiceBus ("debug.bus", ServiceBus.EntityType.Topic, Connection = "debug.bus.pub")>]
-          output : ICollector<string>,
+          output : IAsyncCollector<string>,
           executionContext : ExecutionContext, log : ILogger) =
 
         let logInfo = log.LogInformation
@@ -66,10 +72,10 @@ module Simulate =
         message
         |> logInfo
 
-        output.Add message
+        output.AddAsync message
 
     [<FunctionName("v2_exception_throw_without_catch")>]
-    let v2_exception_throw_no_catch 
+    let v2ExceptionThrowNoCatch 
         ( [<ServiceBusTrigger ("debug.bus", "v2.noCatch", Connection = "debug.bus.sub")>]
          message : string, 
          executionContext : ExecutionContext, log : ILogger) =
@@ -93,7 +99,7 @@ module Simulate =
             |> logInfo
 
     [<FunctionName("v2_exception_throw_with_catch")>]
-    let v2_exception_throw_with_catch
+    let v2ExceptionThrowWithCatch
         ( [<ServiceBusTrigger ("debug.bus", "v2.withCatch", Connection = "debug.bus.sub")>]
          message : string,
          executionContext : ExecutionContext,
@@ -114,7 +120,7 @@ module Simulate =
             "Wraps crashing function in protective wrapper" |> logInfo
 
             ("reboot", executionContext, log)
-            |> ExceptionWrapper logError v2_exception_throw_no_catch
+            |> ExceptionWrapper logError v2ExceptionThrowNoCatch
         | _ ->
             "Do Nothing"
             |> logInfo
